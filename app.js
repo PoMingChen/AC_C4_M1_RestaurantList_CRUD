@@ -3,7 +3,7 @@ const path = require('path');
 const { engine } = require('express-handlebars');
 const app = express();
 const port = 3000;
-const restaurantList = require('./public/jsons/restaurant.json').results;
+// const restaurantList = require('./public/jsons/restaurant.json').results; //順利建立後，可以註解掉
 const db = require('./models')
 const restaurantlist = db.restaurantlist
 
