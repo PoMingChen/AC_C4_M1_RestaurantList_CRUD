@@ -4,6 +4,9 @@ const { engine } = require('express-handlebars');
 const app = express();
 const port = 3000;
 const restaurantList = require('./public/jsons/restaurant.json').results;
+const db = require('./models')
+const restaurantlist = db.restaurantlist
+
 
 app.engine('.hbs', engine({ extname: '.hbs'}));
 app.set('view engine', '.hbs');
@@ -13,7 +16,10 @@ app.use(express.static('public'));
 
 
 app.get('/', (req, res) => {
-  res.redirect('/restaurants')
+  // res.redirect('/restaurants')
+  return restaurantlist.findAll() //非同步語法
+		.then((restaurantlist) => res.send({ restaurantlist }))
+		.catch((err) => res.status(422).json(err))
 })
 
 app.get('/restaurants', (req, res) => {
