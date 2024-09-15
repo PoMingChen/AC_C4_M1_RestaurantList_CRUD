@@ -16,10 +16,10 @@ app.use(express.static('public'));
 
 
 app.get('/', (req, res) => {
-  // res.redirect('/restaurants')
-  return restaurantList.findAll() //非同步語法
-		.then((restaurantList) => res.send({ restaurantList }))
-		.catch((err) => res.status(422).json(err))
+  res.redirect('/restaurants')
+  // return restaurantList.findAll() //非同步語法
+	// 	.then((restaurantList) => res.send({ restaurantList }))
+	// 	.catch((err) => res.status(422).json(err))
 })
 
 app.get('/restaurants', (req, res) => {
@@ -46,24 +46,24 @@ app.get('/restaurants', (req, res) => {
   });
 })
 
-// The route '/restaurant/:id' captures the id parameter from the URL
-// app.get('/restaurants/:id', (req, res) => {
+// The route '/restaurants/:id' captures the id parameter from the URL
+app.get('/restaurants/:id', (req, res) => {
 
-//   // The req.params.id is used to access the id parameter within the route handler.
-//   id = req.params.id
-//    // Fetch all restaurants from the database
-//    restaurantList.findByPk(id,{
-//     attributes: { exclude: ['createdAt', 'updatedAt'] },
-//     raw: true
-//   })
-//   .then(restaurant => {
-//     res.render('detail', {restaurant, id})
-//   })
-//   .catch(error => {
-//     console.error('Error fetching restaurants:', error);
-//     res.status(500).send('Internal Server Error');
-//   });
-// })
+  // The req.params.id is used to access the id parameter within the route handler.
+  id = req.params.id
+   // Fetch all restaurants from the database
+   restaurantList.findByPk(id,{
+    attributes: { exclude: ['createdAt', 'updatedAt'] },
+    raw: true
+  })
+  .then(restaurant => {
+    res.render('detail', {restaurant, id})
+  })
+  .catch(error => {
+    console.error('Error fetching restaurants:', error);
+    res.status(500).send('Internal Server Error');
+  });
+})
 
 
 
