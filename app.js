@@ -5,7 +5,7 @@ const app = express();
 const port = 3000;
 // const restaurantList = require('./public/jsons/restaurant.json').results; //順利建立後，可以註解掉
 const db = require('./models')
-const restaurantlist = db.restaurantlist
+const restaurantList = db.restaurantlist
 
 
 app.engine('.hbs', engine({ extname: '.hbs'}));
@@ -17,29 +17,53 @@ app.use(express.static('public'));
 
 app.get('/', (req, res) => {
   // res.redirect('/restaurants')
-  return restaurantlist.findAll() //非同步語法
-		.then((restaurantlist) => res.send({ restaurantlist }))
+  return restaurantList.findAll() //非同步語法
+		.then((restaurantList) => res.send({ restaurantList }))
 		.catch((err) => res.status(422).json(err))
 })
 
 app.get('/restaurants', (req, res) => {
+  const keyword = req.query.keyword?.trim().toLowerCase() || '';
 
-  const keyword = req.query.keyword?.trim()
-  const matchedRestaurants = keyword ? restaurantList.filter(restaurant => {
-    return restaurant.name.toLowerCase().includes(keyword.toLowerCase()) || restaurant.category.toLowerCase().includes(keyword.toLowerCase())
-  }) : restaurantList
+  // Fetch all restaurants from the database
+  restaurantList.findAll({
+    attributes: { exclude: ['createdAt', 'updatedAt'] },
+    raw: true
+  })
+  .then(restaurants => {
+    // Filter restaurants based on the keyword
+    const matchedRestaurants = keyword ? restaurants.filter(restaurant => {
+      return restaurant.name.toLowerCase().includes(keyword) || 
+             restaurant.category.toLowerCase().includes(keyword);
+    }) : restaurants;
 
-  res.render('index', { restaurants: matchedRestaurants, keyword: keyword })
+    // Render the page with the matched restaurants
+    res.render('index', { restaurants: matchedRestaurants, keyword });
+  })
+  .catch(error => {
+    console.error('Error fetching restaurants:', error);
+    res.status(500).send('Internal Server Error');
+  });
 })
 
 // The route '/restaurant/:id' captures the id parameter from the URL
-app.get('/restaurants/:id', (req, res) => {
+// app.get('/restaurants/:id', (req, res) => {
 
-  // The req.params.id is used to access the id parameter within the route handler.
-  id = req.params.id
-  restaurant = restaurantList.find(restaurant => restaurant.id.toString() === id)
-  res.render('detail', {restaurant, id})
-})
+//   // The req.params.id is used to access the id parameter within the route handler.
+//   id = req.params.id
+//    // Fetch all restaurants from the database
+//    restaurantList.findByPk(id,{
+//     attributes: { exclude: ['createdAt', 'updatedAt'] },
+//     raw: true
+//   })
+//   .then(restaurant => {
+//     res.render('detail', {restaurant, id})
+//   })
+//   .catch(error => {
+//     console.error('Error fetching restaurants:', error);
+//     res.status(500).send('Internal Server Error');
+//   });
+// })
 
 
 
