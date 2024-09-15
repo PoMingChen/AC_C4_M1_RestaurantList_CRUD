@@ -49,6 +49,16 @@
         {{restaurant.description}}
       </p>
 
+      <a href="/restaurants/{{restaurant.id}}/edit" class="badge rounded-pill bg-danger font-weight-normal">
+        Edit
+        <i class="fas fa-star fa-xs"></i>
+      </a>
+
+      <a href="/restaurants" class="badge rounded-pill bg-danger font-weight-normal">
+        back
+        <i class="fas fa-star fa-xs"></i>
+      </a>
+
       <img class="rounded mx-auto d-block mb-4 w-100"
         src="{{restaurant.image}}" alt="{{restaurant.name}}"
         style="max-width: 600px;">

@@ -6,6 +6,7 @@ const port = 3000;
 // const restaurantList = require('./public/jsons/restaurant.json').results; //順利建立後，可以註解掉
 const db = require('./models')
 const restaurantList = db.restaurantlist
+const methodOverride = require('method-override') 
 
 
 app.engine('.hbs', engine({ extname: '.hbs'}));
@@ -13,6 +14,9 @@ app.set('view engine', '.hbs');
 app.set('views', './views');
 
 app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(methodOverride('_method'));//middleware 設定
 
 app.get('/', (req, res) => {
   res.redirect('/restaurants') 
@@ -68,6 +72,42 @@ app.get('/restaurants/:id', (req, res) => {
     res.status(500).send('Internal Server Error');
   });
 })
+
+app.post('/restaurants', (req, res) => {
+  const formData = req.body; 
+
+  // Create a new record in the database using formData
+  return restaurantList.create(formData)
+    .then(() => res.redirect('/restaurants'))
+    .catch((err) => console.log(err));
+
+})
+
+app.get('/restaurants/:id/edit', (req, res) => {
+	const id = req.params.id
+
+	return restaurantList.findByPk(id, {
+		attributes: { exclude: [] },
+		raw: true
+	})
+		.then((restaurant) => res.render('edit', { restaurant }))
+})
+
+app.put('/restaurants/:id', (req, res) => {
+  const id = req.params.id;
+  const updateData = req.body; // Contains all the updated fields
+
+  // Ensure the ID is a number and validate/update only the fields that are present in req.body
+  restaurantList.update(updateData, { where: { id } })
+    .then(() => res.redirect(`/restaurants/${id}`)) // Redirect to the updated restaurant details page
+    .catch((err) => {
+      console.error('Error updating restaurant:', err);
+      res.status(500).send('Internal Server Error');
+    });
+})
+
+
+
 
 
 
