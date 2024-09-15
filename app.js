@@ -14,13 +14,17 @@ app.set('views', './views');
 
 app.use(express.static('public'));
 
-
 app.get('/', (req, res) => {
-  res.redirect('/restaurants')
+  res.redirect('/restaurants') 
   // return restaurantList.findAll() //非同步語法
 	// 	.then((restaurantList) => res.send({ restaurantList }))
 	// 	.catch((err) => res.status(422).json(err))
 })
+
+app.get('/restaurants/new', (req, res) => {
+  return res.render('new')
+})
+
 
 app.get('/restaurants', (req, res) => {
   const keyword = req.query.keyword?.trim().toLowerCase() || '';
