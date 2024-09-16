@@ -3,7 +3,7 @@ const path = require('path');
 const { engine } = require('express-handlebars');
 const app = express();
 const port = 3000;
-// const restaurantList = require('./public/jsons/restaurant.json').results; //順利建立後，可以註解掉
+// const restaurantList = require('./public/jsons/restaurant.json').results; //建立種子資料後，可以註解掉
 const db = require('./models')
 const restaurantList = db.restaurantlist
 const methodOverride = require('method-override') 
@@ -16,13 +16,10 @@ app.set('views', './views');
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(methodOverride('_method'));//middleware 設定
+app.use(methodOverride('_method')); 
 
 app.get('/', (req, res) => {
   res.redirect('/restaurants') 
-  // return restaurantList.findAll() //非同步語法
-	// 	.then((restaurantList) => res.send({ restaurantList }))
-	// 	.catch((err) => res.status(422).json(err))
 })
 
 app.get('/restaurants/new', (req, res) => {
@@ -59,8 +56,8 @@ app.get('/restaurants/:id', (req, res) => {
 
   // The req.params.id is used to access the id parameter within the route handler.
   id = req.params.id
-   // Fetch all restaurants from the database
-   restaurantList.findByPk(id,{
+
+  restaurantList.findByPk(id,{
     attributes: { exclude: ['createdAt', 'updatedAt'] },
     raw: true
   })
@@ -80,7 +77,6 @@ app.post('/restaurants', (req, res) => {
   return restaurantList.create(formData)
     .then(() => res.redirect('/restaurants'))
     .catch((err) => console.log(err));
-
 })
 
 app.get('/restaurants/:id/edit', (req, res) => {
