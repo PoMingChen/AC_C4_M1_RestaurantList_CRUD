@@ -69,7 +69,7 @@ npx sequelize init
 ```
 
 ```
- npx sequelize model:generate --name restaurantlist --attributes name:string, ... //initiate all the columns corresponding to the table schema in your database
+ npx sequelize model:generate --name restaurantlist --attributes name:string, ... //initiate all the columns corresponding to the table schema in your database.
 ```
 
 ```
