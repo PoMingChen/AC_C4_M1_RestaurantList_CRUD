@@ -8,7 +8,7 @@
 - ![Feature_Reading1](./public/images/Feature_Reading1.png)
 - ![Feature_Reading2](./public/images/Feature_Reading2.png)
 - ![Feature_Searching](./public/images/Feature_Searching.png)
-- ![Feature_Updating](./public/images/Feature_Feature_Updating.png)
+- ![Feature_Updating](./public/images/Feature_Updating.png)
 
 ## Getting Started
 
