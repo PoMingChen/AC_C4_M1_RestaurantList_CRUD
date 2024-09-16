@@ -59,6 +59,13 @@
         <i class="fas fa-star fa-xs"></i>
       </a>
 
+      <form action="/restaurants/{{restaurant.id}}?_method=DELETE" method="POST" style="display: inline;">
+        <button type="submit" class="badge rounded-pill bg-danger font-weight-normal">
+          Delete
+          <i class="fas fa-star fa-xs"></i>
+        </button>
+      </form>
+
       <img class="rounded mx-auto d-block mb-4 w-100"
         src="{{restaurant.image}}" alt="{{restaurant.name}}"
         style="max-width: 600px;">

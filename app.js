@@ -65,7 +65,7 @@ app.get('/restaurants/:id', (req, res) => {
     raw: true
   })
   .then(restaurant => {
-    res.render('detail', {restaurant, id})
+    res.render('detail', {restaurant})
   })
   .catch(error => {
     console.error('Error fetching restaurants:', error);
@@ -103,10 +103,15 @@ app.put('/restaurants/:id', (req, res) => {
     .catch((err) => {
       console.error('Error updating restaurant:', err);
       res.status(500).send('Internal Server Error');
-    });
+    }); 
 })
 
+app.delete('/restaurants/:id', (req, res) => {
+	const id = req.params.id
 
+	return restaurantList.destroy({ where: { id }})
+		.then(() => res.redirect('/restaurants'))
+})
 
 
 
