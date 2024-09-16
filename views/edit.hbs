@@ -63,8 +63,15 @@
                 <textarea id="description" placeholder="餐廳描述(建議 < 100 字)" name="description" value="{{restaurant.description}}"></textarea>
             </div>
             <!-- More inputs as needed -->
-            <button type="submit">Save</button>
-            <a href="/restaurants/">back</a>
+
+            
+            <button type="submit" class="badge rounded-pill btn btn-danger font-weight-normal">Save</button>
+            {{!-- <a href="/restaurants/" class="badge rounded-pill bg-danger font-weight-normal">back</a>s --}}
+      
+            <a href="/restaurants" class="badge rounded-pill bg-danger font-weight-normal no-underline">
+              Back
+            </a>
+
         </form>
     </div>
   </div>

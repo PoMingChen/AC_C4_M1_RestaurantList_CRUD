@@ -27,7 +27,14 @@
           </div>
         </div>
       </form>
-      <a href="./restaurants/new" class="badge rounded-pill btn btn-major font-weight-normal">建立新餐廳</a>
+
+      <form action="./restaurants/new" method="GET" style="display: inline;">
+        <button type="submit" class="badge rounded-pill btn btn-major font-weight-normal">
+          建立新餐廳
+          <i class="fas fa-star fa-xs"></i>
+        </button>
+      </form>
+
     </div>
   </div>
 </div>
@@ -57,15 +64,19 @@
                   <i class="fas fa-star fa-xs"></i>
                 </span>
 
-                <a href="/restaurants/{{restaurant.id}}/edit" class="badge rounded-pill bg-danger font-weight-normal">
-                   Edit
-                  <i class="fas fa-star fa-xs"></i>
-                </a>
+                <form action="/restaurants/{{restaurant.id}}/edit" method="GET" style="display: inline;">
+                  <button type="submit" class="badge rounded-pill bg-danger font-weight-normal">
+                    Edit
+                    <i class="fas fa-star fa-xs"></i>
+                  </button>
+                </form>
 
-                <a href="/restaurants/{{restaurant.id}}" class="badge rounded-pill bg-danger font-weight-normal">
-                   Detail
-                  <i class="fas fa-star fa-xs"></i>
-                </a>
+                <form action="/restaurants/{{restaurant.id}}" method="GET" style="display: inline;">
+                  <button type="submit" class="badge rounded-pill bg-danger font-weight-normal">
+                    Detail
+                    <i class="fas fa-star fa-xs"></i>
+                  </button>
+                </form>
 
                 <form action="/restaurants/{{restaurant.id}}?_method=DELETE" method="POST" style="display: inline;">
                   <button type="submit" class="badge rounded-pill bg-danger font-weight-normal">
