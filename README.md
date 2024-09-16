@@ -54,6 +54,29 @@ npm install
 
 3. 匯入種子資料
 
+- 首先確保個人本地端的資料庫有啟動，並建立一個名稱為 `restaurant` 的資料庫，以及一個 `restaurantlists` 資料表。
+- 確認個人本地端，與該資料庫的連線帳密是否一致
+- 以本專案路徑下的 `./seeders/20240914152946-add-sample-restaurant-data.js` 執行以下指令，完成匯入。
+
+```
+npx sequelize db:seed:all
+```
+
+- 補充：由於本專案已經有先透過 sequelize 建立 model instance（modelName: `restaurantlist`），並且完成 migration，因此可以省略以下動作，直接執行種子資料的匯入。以下指令必要時可以自行回顧。
+
+```
+npx sequelize init
+```
+
+```
+ npx sequelize model:generate --name restaurantlist --attributes name:string, ... //initiate all the columns corresponding to the table schema in your database
+```
+
+```
+npx sequelize db:migrate
+```
+
+
 ## Running the tests
 
 - 尚未實作
