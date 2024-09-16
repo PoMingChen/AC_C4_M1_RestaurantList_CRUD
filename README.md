@@ -54,8 +54,8 @@ npm install
 
 3. 匯入種子資料
 
-- 首先確保個人本地端的資料庫有啟動，並建立一個名稱為 `restaurant` 的資料庫，以及一個 `restaurantlists` 資料表。
-- 確認個人本地端，與該資料庫的連線帳密是否一致
+- 首先確保個人本地端的資料庫有啟動，並建立一個名稱為 `restaurant` 的資料庫，以及一個空的`restaurantlists` 資料表。
+- 確認個人本地端，與連線該資料庫的帳密是否一致
 - 以本專案路徑下的 `./seeders/20240914152946-add-sample-restaurant-data.js` 執行以下指令，完成匯入。
 
 ```
@@ -96,8 +96,8 @@ nodemon app.js
 - [Node.js](https://nodejs.org/en)
 - [Express](https://expressjs.com)
 - [Express Handlebars](https://www.npmjs.com/package/express-handlebars)
-- [前端網頁頁面設計 1]（https://codepen.io/alpha-camp/pen/yrLbrZ）-由 AlphaCamp 提供
-- [前端網頁頁面設計 2]（https://codepen.io/alpha-camp/pen/JVjNgG）-由 AlphaCamp 提供
+- [前端網頁頁面設計 1]（https://codepen.io/alpha-camp/pen/yrLbrZ），由 AlphaCamp 提供
+- [前端網頁頁面設計 2]（https://codepen.io/alpha-camp/pen/JVjNgG），由 AlphaCamp 提供
 
 ## Contributing
 
