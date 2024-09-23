@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-const restaurantList = require('../public/jsons/restaurant.json').results;
+const restaurantList = require('../public/jsons/restaurant.json').results
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -16,14 +16,14 @@ module.exports = {
       google_map: item.google_map,
       rating: item.rating,
       description: item.description,
-      //This object represents the current date and time when the Date constructor is called. 
-      //Date() is JS built-in class.
-      createdAt: new Date(), 
+      // This object represents the current date and time when the Date constructor is called.
+      // Date() is JS built-in class.
+      createdAt: new Date(),
       updatedAt: new Date()
-    })), {});
+    })), {})
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('restaurantlists', null, {});
+    await queryInterface.bulkDelete('restaurantlists', null, {})
   }
-};
+}
