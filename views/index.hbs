@@ -1,16 +1,16 @@
 <header></header>
-  <!-- navigation -->
-  <nav class="navbar navbar-light bg-light">
-    <div class="container">
-      <a class="navbar-brand" href="/">
-        <img src="https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/6227/restaurant-list-logo.png"
-          width="30" height="30" class="d-inline-block align-top" alt="我的餐廳清單">
-        我的餐廳清單
-      </a>
-    </div>
-  </nav>
+<!-- navigation -->
+<nav class="navbar navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <img src="https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/6227/restaurant-list-logo.png" width="30"
+        height="30" class="d-inline-block align-top" alt="我的餐廳清單">
+      我的餐廳清單
+    </a>
+  </div>
+</nav>
 
-  <div class="banner"></div>
+<div class="banner"></div>
 </header>
 
 <!-- search bar -->
@@ -48,47 +48,38 @@
       <div class="row row-cols-sm-3">
 
         {{#each restaurants as |restaurant|}}
-          <div class="text-secondary">
-            <div class="card mb-3">
-              <img class="card-img-top" src="{{restaurant.image}}"
-                alt="{{restaurant.name}}">
-              <div class="card-body p-3">
-                
-                <h6 class="card-title mb-1">{{restaurant.name}}</h6>
-          
-                <div class="restaurant-category mb-1">
-                  <i class="fas fa-utensils pr-2"></i> {{restaurant.category}}
-                </div>
-          
-                <span class="badge rounded-pill bg-danger font-weight-normal">
-                  {{restaurant.rating}}
-                  <i class="fas fa-star fa-xs"></i>
-                </span>
+        <div class="text-secondary">
+          <div class="card mb-3">
+            <img class="card-img-top" src="{{restaurant.image}}" alt="{{restaurant.name}}">
+            <div class="card-body p-3">
 
-                <form action="/restaurants/{{restaurant.id}}/edit" method="GET" style="display: inline;">
-                  <button type="submit" class="badge rounded-pill bg-danger font-weight-normal">
-                    Edit
-                    <i class="fas fa-star fa-xs"></i>
-                  </button>
-                </form>
+              <h6 class="card-title mb-1">{{restaurant.name}}</h6>
 
-                <form action="/restaurants/{{restaurant.id}}" method="GET" style="display: inline;">
-                  <button type="submit" class="badge rounded-pill bg-danger font-weight-normal">
-                    Detail
-                    <i class="fas fa-star fa-xs"></i>
-                  </button>
-                </form>
-
-                <form action="/restaurants/{{restaurant.id}}?_method=DELETE" method="POST" style="display: inline;">
-                  <button type="submit" class="badge rounded-pill bg-danger font-weight-normal">
-                    Delete
-                    <i class="fas fa-star fa-xs"></i>
-                  </button>
-                </form>
-
+              <div class="restaurant-category mb-1">
+                <i class="fas fa-utensils pr-2"></i> {{restaurant.category}}
               </div>
+
+              <span class="badge rounded-pill bg-danger font-weight-normal">
+                {{restaurant.rating}}
+                <i class="fas fa-star fa-xs"></i>
+              </span>
+
+              <a href="/restaurants/{{restaurant.id}}/edit"
+                class="badge rounded-pill bg-danger font-weight-normal no-underline">Edit</a>
+
+              <a href="/restaurants/{{restaurant.id}}"
+                class="badge rounded-pill bg-danger font-weight-normal no-underline">Detail</a>
+
+              <form action="/restaurants/{{restaurant.id}}?_method=DELETE" method="POST" style="display: inline;">
+                <button type="submit" class="badge rounded-pill bg-danger font-weight-normal">
+                  Delete
+                  <i class="fas fa-star fa-xs"></i>
+                </button>
+              </form>
+
             </div>
           </div>
+        </div>
         {{/each}}
 
       </div>
