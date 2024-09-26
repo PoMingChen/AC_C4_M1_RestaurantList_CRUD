@@ -7,7 +7,14 @@ const port = 3000
 // const restaurantList = require('./public/jsons/restaurant.json').results; //建立種子資料後，可以註解掉
 const methodOverride = require('method-override')
 
-app.engine('.hbs', engine({ extname: '.hbs' }))
+app.engine('.hbs',
+  engine({
+    extname: '.hbs',
+    helpers: {
+      eq: (a, b) => a === b  // Custom 'eq' helper for equality check
+    }
+  }))
+
 app.set('view engine', '.hbs')
 app.set('views', './views')
 

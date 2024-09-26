@@ -43,11 +43,14 @@
   <div>
     <label for="sort">Sort by: </label>
     <select id="sort" name="sort" onchange="this.form.submit()">
-      <option value="">Sort</option>
-      <option value="nameAsc">(A-Z)</option>
-      <option value="nameDesc">(Z-A)</option>
-      <option value="category">類別</option>
-      <option value="area">地區</option>
+
+      {{!-- Adds the selected attribute to the default "Sort" option if no sorting option is currently
+      selected(sortOption will be undefined). --}}
+      <option value="" {{#unless sortOption}}selected{{/unless}}>Sort</option>
+      <option value="nameAsc" {{#if (eq sortOption "nameAsc" )}}selected{{/if}}>(A-Z)</option>
+      <option value="nameDesc" {{#if (eq sortOption "nameDesc" )}}selected{{/if}}>(Z-A)</option>
+      <option value="category" {{#if (eq sortOption "category" )}}selected{{/if}}>類別</option>
+      <option value="area" {{#if (eq sortOption "area" )}}selected{{/if}}>地區</option>
     </select>
   </div>
 </form>
