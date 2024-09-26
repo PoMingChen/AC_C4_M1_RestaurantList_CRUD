@@ -16,6 +16,8 @@ router.get('/', (req, res) => {
     order = [['name', 'DESC']];  // Sort by name in descending order (Z-A)
   } else if (sortOption === 'category') {
     order = [['category', 'ASC']];  // Sort by name in descending order (Z-A)
+  } else if (sortOption === 'area') {
+    order = [['area', 'ASC']];  // Sort by name in descending order (Z-A)
   }
 
   // Fetch all restaurants from the database
