@@ -6,16 +6,26 @@ const restaurantList = db.restaurantlist
 
 router.get('/', (req, res) => {
   const keyword = req.query.keyword?.trim().toLowerCase() || ''
+  const sortOption = req.query.sort;  // Get the value of the 'sort' field from the query string
+
+  // Determine the sorting order based on the sortOption
+  let order = [['name', 'ASC']];  // Default sorting order (A-Z);
+  if (sortOption === 'nameAsc') {
+    order = [['name', 'ASC']];  // Sort by name in ascending order (A-Z)
+  } else if (sortOption === 'nameDesc') {
+    order = [['name', 'DESC']];  // Sort by name in descending order (Z-A)
+  } else if (sortOption === 'category') {
+    order = [['category', 'ASC']];  // Sort by name in descending order (Z-A)
+  }
 
   // Fetch all restaurants from the database
   restaurantList.findAll({
-
+    order: order,
     attributes: { exclude: ['createdAt', 'updatedAt'] },
     raw: true
   })
     .then(restaurants => {
       // Filter restaurants based on the keyword
-      console.log(restaurants)
       const matchedRestaurants = keyword
         ? restaurants.filter(restaurant => {
           return restaurant.name.toLowerCase().includes(keyword) ||
@@ -23,8 +33,10 @@ router.get('/', (req, res) => {
         })
         : restaurants
 
-      // Render the page with the matched restaurants
-      res.render('index', { restaurants: matchedRestaurants, keyword })
+      console.log('Sort option:', sortOption);
+      console.log(keyword);
+
+      res.render('index', { restaurants: matchedRestaurants, keyword, sortOption })       // Render the page with the matched restaurants
     })
     .catch(error => {
       console.error('Error fetching restaurants:', error)

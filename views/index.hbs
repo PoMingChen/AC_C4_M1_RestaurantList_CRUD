@@ -39,6 +39,19 @@
   </div>
 </div>
 
+<form action="/restaurants" method="GET">
+  <div>
+    <label for="sort">Sort by: </label>
+    <select id="sort" name="sort" onchange="this.form.submit()">
+      <option value="">Sort</option>
+      <option value="nameAsc">(A-Z)</option>
+      <option value="nameDesc">(Z-A)</option>
+      <option value="category">類別</option>
+      <option value="area">地區</option>
+    </select>
+  </div>
+</form>
+
 
 <!-- restaurant list -->
 <div class="container mt-5">
