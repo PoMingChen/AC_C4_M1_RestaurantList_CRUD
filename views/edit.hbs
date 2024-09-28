@@ -29,27 +29,27 @@
         </div>
         <div class="form-group">
           <label for="category">類別：</label>
-          <select id="category" placeholder="餐廳類別" name="category">
-            <option value="">選擇類別</option>
-            <option value="中東料理">中東料理</option>
-            <option value="日本料理">日本料理</option>
-            <option value="義式餐廳">義式餐廳</option>
-            <option value="美式">美式</option>
-            <option value="酒吧">酒吧</option>
-            <option value="咖啡">咖啡</option>
+          <select id="category" name="category">
+            <option value="" {{#unless restaurant.category}}selected{{/unless}}>選擇類別</option>
+            <option value="中東料理" {{#if (eq restaurant.category "中東料理" )}}selected{{/if}}>中東料理</option>
+            <option value="日本料理" {{#if (eq restaurant.category "日本料理" )}}selected{{/if}}>日本料理</option>
+            <option value="義式餐廳" {{#if (eq restaurant.category "義式餐廳" )}}selected{{/if}}>義式餐廳</option>
+            <option value="美式" {{#if (eq restaurant.category "美式" )}}selected{{/if}}>美式</option>
+            <option value="酒吧" {{#if (eq restaurant.category "酒吧" )}}selected{{/if}}>酒吧</option>
+            <option value="咖啡" {{#if (eq restaurant.category "咖啡" )}}selected{{/if}}>咖啡</option>
           </select>
         </div>
         <div class="form-group">
           <label for="area">地區：</label>
-          <select id="area" placeholder="地區類別" name="area">
-            <option value="">選擇類別</option>
-            <option value="臺北市">臺北市</option>
-            <option value="新北市">新北市</option>
-            <option value="桃園市">桃園市</option>
-            <option value="臺中市">臺中市</option>
-            <option value="臺南市">臺南市</option>
-            <option value="高雄市">高雄市</option>
-            <option value="高雄市">六都以外</option>
+          <select id="area" name="area">
+            <option value="" {{#unless restaurant.area}}selected{{/unless}}>選擇類別</option>
+            <option value="臺北市" {{#if (eq restaurant.area "臺北市" )}}selected{{/if}}>臺北市</option>
+            <option value="新北市" {{#if (eq restaurant.area "新北市" )}}selected{{/if}}>新北市</option>
+            <option value="桃園市" {{#if (eq restaurant.area "桃園市" )}}selected{{/if}}>桃園市</option>
+            <option value="臺中市" {{#if (eq restaurant.area "臺中市" )}}selected{{/if}}>臺中市</option>
+            <option value="臺南市" {{#if (eq restaurant.area "臺南市" )}}selected{{/if}}>臺南市</option>
+            <option value="高雄市" {{#if (eq restaurant.area "高雄市" )}}selected{{/if}}>高雄市</option>
+            <option value="六都以外" {{#if (eq restaurant.area "六都以外" )}}selected{{/if}}>六都以外</option>
           </select>
         </div>
         <div class="form-group">
