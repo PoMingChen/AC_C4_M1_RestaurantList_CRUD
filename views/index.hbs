@@ -10,7 +10,7 @@
 
     <!-- create a new restaurant -->
     <form action="./restaurants/new" method="GET" style="display: inline;">
-      <button type="submit" class="rounded-pill btn btn-md navbar-brand" style="border: 2px solid #4592af;">
+      <button type="submit" class="rounded-pill btn btn-md navbar-brand" style="border: 1.5px solid #4592af;">
         建立新餐廳
       </button>
     </form>
@@ -71,6 +71,10 @@
 
               <div class="restaurant-category mb-1">
                 <i class="fas fa-utensils pr-2"></i> {{restaurant.category}}
+              </div>
+
+              <div class="restaurant-category mb-1">
+                <i class="fas fa-utensils pr-2"></i> {{restaurant.area}}
               </div>
 
               <span class="badge rounded-pill bg-danger font-weight-normal">
