@@ -16,7 +16,6 @@ router.get('/', (req, res) => {
   } else if (sortOption === 'nameDesc') {
     order = [['name', 'DESC']];  // Sort by name in descending order (Z-A)
   } else if (sortOption === 'category') {
-    // order = [['category', 'ASC']];  
     order = [[literal(`
     CASE 
       WHEN category IS NULL THEN 9999
@@ -30,7 +29,6 @@ router.get('/', (req, res) => {
     END ASC
   `)]];
   } else if (sortOption === 'area') {
-    // order = [['area', 'ASC']];  
     order = [[literal(`
     CASE 
       WHEN area IS NULL THEN 9999
@@ -64,7 +62,7 @@ router.get('/', (req, res) => {
       console.log('Sort option:', sortOption);
       console.log(keyword);
 
-      res.render('index', { restaurants: matchedRestaurants, keyword, sortOption })       // Render the page with the matched restaurants
+      res.render('index', { restaurants: matchedRestaurants, keyword, sortOption })  // Render the page with the matched restaurants
     })
     .catch(error => {
       console.error('Error fetching restaurants:', error)
