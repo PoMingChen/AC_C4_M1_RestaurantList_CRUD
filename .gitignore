@@ -33,6 +33,6 @@ npm-debug.log
 
 .env
 
-public/images
+# public/images
 
 *.sql
