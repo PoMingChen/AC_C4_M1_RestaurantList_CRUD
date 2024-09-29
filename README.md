@@ -64,30 +64,34 @@ https://github.com/PoMingChen/AC_C4_M1_RestaurantList_CRUD.git
 npm install
 ```
 
-3. 匯入種子資料
+3. 執行 Migration
 
-- 首先確保個人本地端的資料庫有啟動，並建立一個名稱為 `restaurant` 的資料庫，以及一個空的`restaurantlists` 資料表。
+- 首先確保個人本地端的資料庫有啟動，並建立一個名稱為 `restaurant` 的資料庫。
 - 確認個人本地端，與連線該資料庫的帳密是否一致
+- 為了方便實作出『依照地區排序餐廳清單』的功能，相對於本專案路徑下準備好的種子資料 `public/jsons/restaurant.json`，有額外建立一個 `area` 欄位，所以目前 `/migrations` 資料夾中，有兩份檔案，需要先執行以下指令後，讓 Sequelize Model Instance 後續可以用相同的規格跟資料庫溝通。
+
+```
+npx sequelize db:migrate
+```
+
+4. 匯入種子資料
+
 - 以本專案路徑下的 `./seeders/20240914152946-add-sample-restaurant-data.js` 執行以下指令，完成匯入。
+- 針對種子資料沒有的 `area` 欄位，會填入預設值 `臺灣`。
 
 ```
 npx sequelize db:seed:all
 ```
 
-- 補充：由於本專案已經有先透過 sequelize 建立 model instance（modelName: `restaurantlist`），並且完成 migration，因此可以省略以下動作，直接執行種子資料的匯入。以下指令必要時可以自行回顧。
+5. 補充：由於本專案已經有先透過 sequelize 建立 model instance（modelName: `restaurantlist`），因此可以省略以下動作，直接執行 Migration 和種子資料的匯入。以下指令必要時可以自行回顧。
 
 ```
 npx sequelize init
 ```
 
 ```
- npx sequelize model:generate --name restaurantlist --attributes name:string, ... //initiate all the columns corresponding to the table schema in your database.
+npx sequelize model:generate --name restaurantlist --attributes name:string, ... //initiate all the columns corresponding to the table schema in your database.
 ```
-
-```
-npx sequelize db:migrate
-```
-
 
 ## Running the tests
 
