@@ -7,38 +7,53 @@
         height="30" class="d-inline-block align-top" alt="我的餐廳清單">
       我的餐廳清單
     </a>
+
+    <!-- create a new restaurant -->
+    <form action="./restaurants/new" method="GET" style="display: inline;">
+      <button type="submit" class="rounded-pill btn btn-md navbar-brand" style="border: 1.5px solid #4592af;">
+        建立新餐廳
+      </button>
+    </form>
   </div>
 </nav>
 
 <div class="banner"></div>
 </header>
 
-<!-- search bar -->
-<div class="container search-bar">
-  <div class="search-bar-outer">
-    <div class="search-bar-inner">
-      <form action="/restaurants">
-        <h4 class="mb-2">尋找餐廳：</h4>
-        <div class="input-group">
-          <input type="text" name="keyword" class="form-control" placeholder="輸入餐廳、分類" aria-label="Restaurant Name..."
-            value="{{keyword}}" aria-describedby="search-button">
-          <div class="input-group-append">
-            <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-10 col-12 mx-auto">
+      <div class="row row-cols-sm-3 d-flex justify-content-between align-items-center">
+
+        <!-- search bar -->
+        <form action="/restaurants" method="GET" class="col-sm-6 col-md-3">
+          <div class="input-group">
+            <input type="text" name="keyword" class="form-control" placeholder="輸入餐廳、分類" aria-label="Restaurant Name..."
+              value="{{keyword}}" aria-describedby="search-button">
+            <div class="input-group-append">
+              <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
 
-      <!-- create a new restaurant -->
-      <form action="./restaurants/new" method="GET" style="display: inline;">
-        <button type="submit" class="badge rounded-pill btn btn-major font-weight-normal">
-          建立新餐廳
-        </button>
-      </form>
+        <form action="/restaurants" method="GET" class="col-sm-6 col-md-3">
+          <div class="form-group">
+            {{!-- <label for="sort" class="mr-2">Sort by: </label> --}}
+            <select id="sort" name="sort" class="form-control" onchange="this.form.submit()">
+              <option value="" {{#unless sortOption}}selected{{/unless}}>Sort</option>
+              <option value="nameAsc" {{#if (eq sortOption "nameAsc" )}}selected{{/if}}>(A-Z)</option>
+              <option value="nameDesc" {{#if (eq sortOption "nameDesc" )}}selected{{/if}}>(Z-A)</option>
+              <option value="category" {{#if (eq sortOption "category" )}}selected{{/if}}>類別</option>
+              <option value="area" {{#if (eq sortOption "area" )}}selected{{/if}}>地區</option>
+            </select>
+          </div>
+        </form>
 
+      </div>
     </div>
   </div>
 </div>
-
 
 <!-- restaurant list -->
 <div class="container mt-5">
@@ -56,6 +71,10 @@
 
               <div class="restaurant-category mb-1">
                 <i class="fas fa-utensils pr-2"></i> {{restaurant.category}}
+              </div>
+
+              <div class="restaurant-category mb-1">
+                <i class="fas fa-utensils pr-2"></i> {{restaurant.area}}
               </div>
 
               <span class="badge rounded-pill bg-danger font-weight-normal">
