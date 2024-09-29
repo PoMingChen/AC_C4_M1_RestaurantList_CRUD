@@ -1,14 +1,26 @@
 # 我的餐廳清單
 
-這個專案是 AlphaCamp 全端網頁課程，C4 成為軟體工程師 - 後端專修， M1 章節的實作作業。主要是透過 Node.js、Express 框架，練習一個簡易的餐廳清單應用程式（Web Applicaton）。
+這個專案是 AlphaCamp 全端網頁課程，C4 成為軟體工程師 - 後端專修， M1 + M2 章節的實作作業。主要是透過 Node.js、Express 框架，練習一個簡易的餐廳清單應用程式（Web Applicaton）。
 
-主要功能有：餐廳清單的瀏覽、餐廳細部介紹，以及透過搜尋功能（餐廳名稱或類別），來找到符合條件的餐廳。另外使用者可以自行新增、修改、刪除特定的餐廳資料。
+主要功能有：
 
-- ![Feature_Creating](./public/images/Feature_Creating.png)
-- ![Feature_Reading1](./public/images/Feature_Reading1.png)
-- ![Feature_Reading2](./public/images/Feature_Reading2.png)
-- ![Feature_Searching](./public/images/Feature_Searching.png)
-- ![Feature_Updating](./public/images/Feature_Updating.png)
+- 餐廳清單的瀏覽、餐廳細部介紹；使用者也可以自行新增、更新、刪除特定的餐廳資料。
+- 使用者可以透過搜尋功能（餐廳名稱或類別），來找到符合條件的餐廳。
+- 使用者可以透過排序，包含餐廳名稱、餐廳類別、餐廳所在地區，讓餐廳清單依照自己的偏好呈現。
+
+
+- 建立新餐廳 
+![Feature_Creating](./public/images/Feature_Creating.png)
+- 瀏覽餐廳清單
+![Feature_Reading1](./public/images/Feature_Reading1.png)
+- 瀏覽餐廳細部介紹
+![Feature_Reading2](./public/images/Feature_Reading2.png)
+- 搜尋功能（餐廳名稱或類別）
+![Feature_Searching](./public/images/Feature_Searching.png)
+- 更新餐廳資訊
+![Feature_Updating](./public/images/Feature_Updating.png)
+- 依照餐廳類別排序
+![Feature_Sorting](./public/images/Feature_Sorting.png)
 
 ## Getting Started
 
