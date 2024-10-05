@@ -27,7 +27,8 @@ app.use(methodOverride('_method'))
 
 //By placing the app.get('/') route before app.use(router), the server will first check for requests to /, and immediately perform the redirect to /restaurants. Therefore, the router module about restaurants will be triggered.
 app.get('/', (req, res) => {
-  res.redirect('/restaurants')
+  // res.redirect('/restaurants')
+  res.redirect('/register')
 })
 
 app.use(router)
