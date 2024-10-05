@@ -1,4 +1,6 @@
 const express = require('express')
+const flash = require('connect-flash') //新增
+const session = require('express-session')
 const path = require('path')
 const { engine } = require('express-handlebars')
 const app = express()
@@ -6,6 +8,13 @@ const router = require('./routes')
 const port = 3000
 // const restaurantList = require('./public/jsons/restaurant.json').results; //建立種子資料後，可以註解掉
 const methodOverride = require('method-override')
+
+if (process.env.NODE_ENV === 'development') {
+  require('dotenv').config()
+}
+
+console.log('env', process.env.NODE_ENV)
+console.log('env', process.env.SESSION_SECRET)
 
 app.engine('.hbs',
   engine({
