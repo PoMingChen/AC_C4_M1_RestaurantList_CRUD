@@ -5,6 +5,8 @@ const path = require('path')
 const { engine } = require('express-handlebars')
 const app = express()
 const router = require('./routes')
+const messageHandler = require('./middlewares/message-handler')
+const errorHandler = require('./middlewares/error-handler')
 const port = 3000
 // const restaurantList = require('./public/jsons/restaurant.json').results; //建立種子資料後，可以註解掉
 const methodOverride = require('method-override')
@@ -33,6 +35,15 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(methodOverride('_method'))
 
+// Initialize sessions first before flash since flash message depends on sessions. Same logic for messageHandler.
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(flash());
+app.use(messageHandler)
+
 
 //By placing the app.get('/') route before app.use(router), the server will first check for requests to /, and immediately perform the redirect to /restaurants. Therefore, the router module about restaurants will be triggered.
 app.get('/', (req, res) => {
@@ -40,7 +51,11 @@ app.get('/', (req, res) => {
   res.redirect('/register')
 })
 
+
 app.use(router)
+app.use(errorHandler);
+
+
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`)
