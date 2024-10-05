@@ -5,6 +5,7 @@ const path = require('path')
 const { engine } = require('express-handlebars')
 const app = express()
 const router = require('./routes')
+const passport = require('./config/passport.js')
 const messageHandler = require('./middlewares/message-handler')
 const errorHandler = require('./middlewares/error-handler')
 const port = 3000
@@ -42,6 +43,9 @@ app.use(session({
   saveUninitialized: false
 }));
 app.use(flash());
+app.use(passport.initialize())
+app.use(passport.session()) //使用 session 作為驗證的資料來源，啟用「登入保持狀態」功能，讓使用者在登入後可以保持登入狀態，並在整個應用程式中被識別為已驗證的使用者。 //後續請求時：passport.session() 會啟動 session 機制，並自動透過 passport.deserializeUser() 從 session 中取得已登入的使用者資訊，將其附加到 req.user。後續使用者在登入後，每個請求都可以透過 req.user 來存取使用者的資訊。
+
 app.use(messageHandler)
 
 
