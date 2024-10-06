@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      restaurantlist.belongsTo(models.User)
     }
   }
   restaurantlist.init({
@@ -28,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       defaultValue: '臺灣',
       allowNull: true
+    },
+    userId: { //新增外鍵 userId
+      type: DataTypes.INTEGER,
+      allowNull: false
     }
   }, {
     sequelize,
@@ -35,3 +40,4 @@ module.exports = (sequelize, DataTypes) => {
   })
   return restaurantlist
 }
+
