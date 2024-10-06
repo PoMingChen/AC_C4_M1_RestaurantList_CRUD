@@ -4,8 +4,6 @@ const session = require('express-session')
 const path = require('path')
 const { engine } = require('express-handlebars')
 const app = express()
-const router = require('./routes')
-const passport = require('./config/passport.js')
 const messageHandler = require('./middlewares/message-handler')
 const errorHandler = require('./middlewares/error-handler')
 const port = 3000
@@ -18,6 +16,11 @@ if (process.env.NODE_ENV === 'development') {
 
 console.log('env', process.env.NODE_ENV)
 console.log('env', process.env.SESSION_SECRET)
+console.log('env', process.env.FACEBOOK_CLIENT_ID);
+console.log('env', process.env.FACEBOOK_CLIENT_SECRET);
+
+const router = require('./routes')
+const passport = require('./config/passport.js') // 要在引入環境變數後才能引入 passport，不然 FacebookStrategy 會找不到環墮變數
 
 app.engine('.hbs',
   engine({
