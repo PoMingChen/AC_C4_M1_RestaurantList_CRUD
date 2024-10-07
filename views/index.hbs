@@ -42,9 +42,9 @@
           </div>
         </form>
 
+        <!-- sorting selection -->
         <form action="/restaurants" method="GET" class="col-sm-6 col-md-3">
           <div class="form-group">
-            {{!-- <label for="sort" class="mr-2">Sort by: </label> --}}
             <select id="sort" name="sort" class="form-control" onchange="this.form.submit()">
               <option value="" {{#unless sortOption}}selected{{/unless}}>Sort</option>
               <option value="nameAsc" {{#if (eq sortOption "nameAsc" )}}selected{{/if}}>(A-Z)</option>
@@ -59,7 +59,6 @@
     </div>
   </div>
 </div>
-
 
 
 <!-- restaurant list -->
