@@ -1,9 +1,14 @@
 module.exports = (error, req, res, next) => {
-  console.error(error)
-  console.log(req.flash);
-  req.flash('error', error.errorMessage || '處理失敗:(')
-  res.redirect('back')
+  console.error(error); // Log the error to the console.
+  console.log(req.flash); // Check the current flash messages.
 
-  //next(error) 的作用是將錯誤傳遞給下一個錯誤處理 middleware，如果沒有其他錯誤處理 middleware 或路由，Express 會使用預設的錯誤處理機制來回應錯誤，這樣可以確保錯誤得到適當的捕獲和回應。
-  next(error)
-}
+  // Set an error flash message to display to the user, defaulting if not provided.
+  req.flash('error', error.errorMessage || '處理失敗:(');
+
+  res.redirect('back'); // Redirect the user back to the previous page.
+
+  // The purpose of next(error) is to pass the error to the next error-handling middleware.
+  // If there are no other error-handling middleware or routes, 
+  // Express will use the default error-handling mechanism to respond to the error.
+  next(error);
+};

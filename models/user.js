@@ -10,14 +10,13 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
       User.hasMany(models.restaurantlist)
     }
   }
   User.init({
     name: {
       type: DataTypes.STRING,
-      allowNull: true, // name is optional, no changes needed here
+      allowNull: true,
     },
     email: {
       type: DataTypes.STRING,

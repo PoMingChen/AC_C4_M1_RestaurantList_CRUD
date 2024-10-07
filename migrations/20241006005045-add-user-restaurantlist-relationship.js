@@ -2,7 +2,7 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     await queryInterface.addColumn('restaurantlists', 'userId', {
       type: Sequelize.INTEGER,
       references: {
@@ -11,10 +11,10 @@ module.exports = {
       },
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
-    })
+    });
   },
 
-  async down (queryInterface, Sequelize) {
-    await queryInterface.removeColumn('restaurantlists', 'userId')
+  async down(queryInterface, Sequelize) {
+    await queryInterface.removeColumn('restaurantlists', 'userId');
   }
 };

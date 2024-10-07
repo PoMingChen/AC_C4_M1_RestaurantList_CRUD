@@ -10,7 +10,6 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
       restaurantlist.belongsTo(models.User)
     }
   }
@@ -30,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: '臺灣',
       allowNull: true
     },
-    userId: { //新增外鍵 userId
+    userId: { //Add Foregin Key userId
       type: DataTypes.INTEGER,
       allowNull: false
     }
