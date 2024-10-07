@@ -45,7 +45,7 @@ module.exports = {
         { transaction }
       )
 
-      // Prepare restaurant data with user IDs
+      // Prepare restaurant data with userIds
       const restaurantsWithUserIds = restaurantList.map((item, index) => {
         let userId = null;
 
@@ -98,8 +98,7 @@ module.exports = {
       await queryInterface.bulkInsert('Users', existingUsers, { transaction });
       await queryInterface.bulkInsert('restaurantlists', existingRestaurants, { transaction });
 
-      // Commit the transaction
-      await transaction.commit();
+      await transaction.commit();  // Commit the transaction
     } catch (error) {
       if (transaction) await transaction.rollback();
       throw error; // Re-throw the error to ensure proper error handling
