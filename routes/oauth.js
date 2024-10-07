@@ -1,8 +1,6 @@
-// 引用 Express 與 Express 路由器
 const express = require('express')
 const router = express.Router()
 const passport = require('passport')
-
 
 router.get('/login/facebook', passport.authenticate('facebook', { scope: ['email'] }))
 

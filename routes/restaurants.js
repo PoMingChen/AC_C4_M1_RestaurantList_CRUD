@@ -7,8 +7,8 @@ const restaurantList = db.restaurantlist
 
 router.get('/', (req, res, next) => {
   const keyword = req.query.keyword?.trim().toLowerCase() || ''
-  const sortOption = req.query.sort;  // Get the value of the 'sort' field from the query string
-  const userId = req.user.id //新增這部分
+  const sortOption = req.query.sort;  // Retrieve the sort option from the query
+  const userId = req.user.id
 
   // Determine the sorting order based on the sortOption
   let order = [['name', 'ASC']];  // Default sorting order (A-Z);
@@ -45,15 +45,15 @@ router.get('/', (req, res, next) => {
   `)]];
   }
 
-  // Fetch all restaurants from the database
+  // Retrieve all restaurants for the user from the database
   restaurantList.findAll({
     order: order,
     attributes: { exclude: ['createdAt', 'updatedAt'] },
-    where: { userId }, //每個人只能瀏覽到自己的 Todo
+    where: { userId }, // Only show restaurants for this user
     raw: true
   })
     .then((restaurants) => {
-      // Filter restaurants based on the keyword
+      // Filter based on the keyword, if provided
       const matchedRestaurants = keyword
         ? restaurants.filter(restaurant => {
           return restaurant.name.toLowerCase().includes(keyword) ||
@@ -67,8 +67,8 @@ router.get('/', (req, res, next) => {
       res.render('index', { restaurants: matchedRestaurants, keyword, sortOption })  // Render the page with the matched restaurants
     })
     .catch((error) => {
-      error.errorMessage = '資料取得失敗:('
-      next(error)
+      error.errorMessage = '資料取得失敗:(' // Set error message
+      next(error) // Pass to error handler middleware
     })
 })
 
@@ -76,11 +76,11 @@ router.get('/new', (req, res) => {
   return res.render('new')
 })
 
-// The route '/restaurants/:id' captures the id parameter from the URL
+// Fetch specific restaurant by ID and check access permissions
 router.get('/:id', (req, res, next) => {
   // The req.params.id is used to access the id parameter within the route handler.
   const id = req.params.id
-  const userId = req.user.id //把 req.user 夾帶的（反序列化）的 user.id 放進來
+  const userId = req.user.id // Store the user.id from the deserialized req.user
 
   restaurantList.findByPk(id, {
     attributes: { exclude: ['createdAt', 'updatedAt'] },
@@ -91,7 +91,9 @@ router.get('/:id', (req, res, next) => {
         req.flash('error', '找不到資料')
         return res.redirect('/restaurants')
       }
-      if (restaurant.userId !== userId) { //如果這個 restaurant 其所屬的 userId，沒有跟當前登入的 userId(req.user.id) 一樣，就會跳出權限不足的錯誤訊息
+
+      // If the userId associated with this restaurant doesn't match the current logged-in user's userId (req.user.id), show an unauthorized error message
+      if (restaurant.userId !== userId) {
         req.flash('error', '權限不足')
         return res.redirect('/restaurants')
       }
@@ -103,7 +105,7 @@ router.get('/:id', (req, res, next) => {
     })
 })
 
-router.post('/', (req, res, next) => { // don't forget to add next as the third argument
+router.post('/', (req, res, next) => { // don't forget to next parameter
   const formData = req.body
   const userId = req.user.id
 
@@ -115,15 +117,14 @@ router.post('/', (req, res, next) => { // don't forget to add next as the third 
       return res.redirect('/restaurants')
     })
     .catch((error) => {
-      error.errorMessage = '新增失敗:(' //定義 error 物件裡面的 errorMessage attribute
+      error.errorMessage = '新增失敗:('
       next(error)
     })
 })
 
 router.get('/:id/edit', (req, res, next) => {
   const id = req.params.id
-  const userId = req.user.id //把 req.user 夾帶的（反序列化）的 user.id 放進來
-
+  const userId = req.user.id // Store the user.id from the deserialized req.user
   return restaurantList.findByPk(id, {
     attributes: { exclude: [] },
     raw: true
@@ -133,22 +134,22 @@ router.get('/:id/edit', (req, res, next) => {
         req.flash('error', '找不到資料')
         return res.redirect('/restaurants')
       }
-      if (restaurant.userId !== userId) { //如果這個 todo 其所屬的 userId，沒有跟當前登入的 userId(req.user.id) 一樣，就會跳出權限不足的錯誤訊息
+      if (restaurant.userId !== userId) {
         req.flash('error', '權限不足')
         return res.redirect('/restaurants')
       }
       res.render('edit', { restaurant })
     })
     .catch((error) => {
-      error.errorMessage = '新增失敗:(' //定義 error 物件裡面的 errorMessage attribute
-      next(error) //把 error 這個變數，傳入下一個 middleware，也就是 app.use(errorHandler)，那截止當前，app.use(errorHandler) 是最後一個 middleware，他會處理 flash message 後一層層經過剛才通過的 middleware 後，返還 response
+      error.errorMessage = '新增失敗:('
+      next(error) // Pass error to next middleware
     })
 })
 
 router.put('/:id', (req, res, next) => {
   const id = req.params.id
   const updateData = req.body // Contains all the updated fields
-  const userId = req.user.id //把 req.user 夾帶的（反序列化）的 user.id 放進來
+  const userId = req.user.id // Store the user.id from the deserialized req.user
 
   return restaurantList.findByPk(id, {
     attributes: { exclude: [] }
@@ -163,24 +164,18 @@ router.put('/:id', (req, res, next) => {
         return res.redirect('/restaurants')
       }
 
-      return restaurant.update(updateData) //不用再寫 { where: { id } }，因為我們已經在上面的 findByPk 撈出來了，所以這邊直接更新就好。注意這邊要用 restaurant，不是 restaurantList 因為是 instance method
+      //Make sure to use restaurant, not restaurantList, as this is an instance method.
+      return restaurant.update(updateData)  // No need to write { where: { id } } since we already fetched it using findByPk earlier.
         .then(() => {
           req.flash('success', '更新成功!')
           return res.redirect(`/restaurants/${id}`)
         })
     })
     .catch((error) => {
-      error.errorMessage = '更新失敗:(' //定義 error 物件裡面的 errorMessage attribute
-      next(error) //把 error 這個變數，傳入下一個 middleware，也就是 app.use(errorHandler)，那截止當前，app.use(errorHandler) 是最後一個 middleware，他會處理 flash message 後一層層經過剛才通過的 middleware 後，返還 response
+      error.errorMessage = '更新失敗:('
+      next(error)
     })
 
-  // Ensure the ID is a number and validate/update only the fields that are present in req.body
-  // restaurantList.update(updateData, { where: { id } })
-  //   .then(() => res.redirect(`/restaurants/${id}`)) // Redirect to the updated restaurant details page
-  //   .catch((err) => {
-  //     console.error('Error updating restaurant:', err)
-  //     res.status(500).send('Internal Server Error')
-  //   })
 })
 
 router.delete('/:id', (req, res, next) => {
@@ -195,24 +190,23 @@ router.delete('/:id', (req, res, next) => {
         req.flash('error', '找不到資料')
         return res.redirect('/restaurants')
       }
-      if (restaurant.userId !== userId) { //在這裡更新權限比對
+      if (restaurant.userId !== userId) {
         req.flash('error', '權限不足')
         return res.redirect('/restaurants')
       }
 
-      return restaurant.destroy() // 不用再寫 { where: { id } }，因為我們已經在上面的 findByPk 撈出來了，所以這邊直接刪除就好。注意這邊要用 restaurant，不是 restaurantList 因為是 instance method
+      //Make sure to use restaurant, not restaurantList, as this is an instance method.
+      return restaurant.destroy()// No need to write { where: { id } } since we already fetched it using findByPk earlier.
         .then(() => {
           req.flash('success', '刪除成功!')
           return res.redirect('/restaurants')
         })
     })
     .catch((error) => {
-      error.errorMessage = '刪除失敗:(' //定義 error 物件裡面的 errorMessage attribute
-      next(error) //把 error 這個變數，傳入下一個 middleware，也就是 app.use(errorHandler)，那截止當前，app.use(errorHandler) 是最後一個 middleware，他會處理 flash message 後一層層經過剛才通過的 middleware 後，返還 response
+      error.errorMessage = '刪除失敗:('
+      next(error)
     })
 
-  // return restaurantList.destroy({ where: { id } })
-  //   .then(() => res.redirect('/restaurants'))
 })
 
 module.exports = router

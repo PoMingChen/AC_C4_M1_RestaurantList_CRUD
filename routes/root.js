@@ -17,7 +17,8 @@ router.post('/login', passport.authenticate('local', {
   failureFlash: true
 }))
 router.post('/logout', (req, res) => {
-  req.logout((error) => { //req.logout() 是 Passport.js 提供的方法，用來登出目前的使用者。這個方法會清除與該使用者相關的 session 資料，並取消已經建立的登入狀態。
+  // req.logout() is a Passport.js method used to log out the current user. It clears the session data associated with the user and removes the established login state.
+  req.logout((error) => {
     if (error) {
       next(error)
     }
