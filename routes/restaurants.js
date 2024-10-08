@@ -5,9 +5,10 @@ const db = require('../models')
 const { literal } = require('sequelize');  // Import literal here
 const restaurantList = db.restaurantlist
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   const keyword = req.query.keyword?.trim().toLowerCase() || ''
-  const sortOption = req.query.sort;  // Get the value of the 'sort' field from the query string
+  const sortOption = req.query.sort;  // Retrieve the sort option from the query
+  const userId = req.user.id
 
   // Determine the sorting order based on the sortOption
   let order = [['name', 'ASC']];  // Default sorting order (A-Z);
@@ -44,14 +45,15 @@ router.get('/', (req, res) => {
   `)]];
   }
 
-  // Fetch all restaurants from the database
+  // Retrieve all restaurants for the user from the database
   restaurantList.findAll({
     order: order,
     attributes: { exclude: ['createdAt', 'updatedAt'] },
+    where: { userId }, // Only show restaurants for this user
     raw: true
   })
-    .then(restaurants => {
-      // Filter restaurants based on the keyword
+    .then((restaurants) => {
+      // Filter based on the keyword, if provided
       const matchedRestaurants = keyword
         ? restaurants.filter(restaurant => {
           return restaurant.name.toLowerCase().includes(keyword) ||
@@ -64,9 +66,9 @@ router.get('/', (req, res) => {
 
       res.render('index', { restaurants: matchedRestaurants, keyword, sortOption })  // Render the page with the matched restaurants
     })
-    .catch(error => {
-      console.error('Error fetching restaurants:', error)
-      res.status(500).send('Internal Server Error')
+    .catch((error) => {
+      error.errorMessage = '資料取得失敗:(' // Set error message
+      next(error) // Pass to error handler middleware
     })
 })
 
@@ -74,61 +76,137 @@ router.get('/new', (req, res) => {
   return res.render('new')
 })
 
-// The route '/restaurants/:id' captures the id parameter from the URL
-router.get('/:id', (req, res) => {
+// Fetch specific restaurant by ID and check access permissions
+router.get('/:id', (req, res, next) => {
   // The req.params.id is used to access the id parameter within the route handler.
-  id = req.params.id
+  const id = req.params.id
+  const userId = req.user.id // Store the user.id from the deserialized req.user
 
   restaurantList.findByPk(id, {
     attributes: { exclude: ['createdAt', 'updatedAt'] },
     raw: true
   })
-    .then(restaurant => {
+    .then((restaurant) => {
+      if (!restaurant) {
+        req.flash('error', '找不到資料')
+        return res.redirect('/restaurants')
+      }
+
+      // If the userId associated with this restaurant doesn't match the current logged-in user's userId (req.user.id), show an unauthorized error message
+      if (restaurant.userId !== userId) {
+        req.flash('error', '權限不足')
+        return res.redirect('/restaurants')
+      }
       res.render('detail', { restaurant })
     })
-    .catch(error => {
-      console.error('Error fetching restaurants:', error)
-      res.status(500).send('Internal Server Error')
+    .catch((error) => {
+      error.errorMessage = '資料取得失敗:('
+      next(error)
     })
 })
 
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => { // don't forget to next parameter
   const formData = req.body
+  const userId = req.user.id
 
   // Create a new record in the database using formData
-  return restaurantList.create(formData)
-    .then(() => res.redirect('/restaurants'))
-    .catch((err) => console.log(err))
+  return restaurantList.create({ ...formData, userId }) // Use the spread operator
+
+    .then(() => {
+      req.flash('success', '新增成功!')
+      return res.redirect('/restaurants')
+    })
+    .catch((error) => {
+      error.errorMessage = '新增失敗:('
+      next(error)
+    })
 })
 
-router.get('/:id/edit', (req, res) => {
+router.get('/:id/edit', (req, res, next) => {
   const id = req.params.id
-
+  const userId = req.user.id // Store the user.id from the deserialized req.user
   return restaurantList.findByPk(id, {
     attributes: { exclude: [] },
     raw: true
   })
-    .then((restaurant) => res.render('edit', { restaurant }))
-})
-
-router.put('/:id', (req, res) => {
-  const id = req.params.id
-  const updateData = req.body // Contains all the updated fields
-
-  // Ensure the ID is a number and validate/update only the fields that are present in req.body
-  restaurantList.update(updateData, { where: { id } })
-    .then(() => res.redirect(`/restaurants/${id}`)) // Redirect to the updated restaurant details page
-    .catch((err) => {
-      console.error('Error updating restaurant:', err)
-      res.status(500).send('Internal Server Error')
+    .then((restaurant) => {
+      if (!restaurant) {
+        req.flash('error', '找不到資料')
+        return res.redirect('/restaurants')
+      }
+      if (restaurant.userId !== userId) {
+        req.flash('error', '權限不足')
+        return res.redirect('/restaurants')
+      }
+      res.render('edit', { restaurant })
+    })
+    .catch((error) => {
+      error.errorMessage = '新增失敗:('
+      next(error) // Pass error to next middleware
     })
 })
 
-router.delete('/:id', (req, res) => {
+router.put('/:id', (req, res, next) => {
   const id = req.params.id
+  const updateData = req.body // Contains all the updated fields
+  const userId = req.user.id // Store the user.id from the deserialized req.user
 
-  return restaurantList.destroy({ where: { id } })
-    .then(() => res.redirect('/restaurants'))
+  return restaurantList.findByPk(id, {
+    attributes: { exclude: [] }
+  })
+    .then((restaurant) => {
+      if (!restaurant) {
+        req.flash('error', '找不到資料')
+        return res.redirect('/restaurants')
+      }
+      if (restaurant.userId !== userId) {
+        req.flash('error', '權限不足')
+        return res.redirect('/restaurants')
+      }
+
+      //Make sure to use restaurant, not restaurantList, as this is an instance method.
+      return restaurant.update(updateData)  // No need to write { where: { id } } since we already fetched it using findByPk earlier.
+        .then(() => {
+          req.flash('success', '更新成功!')
+          return res.redirect(`/restaurants/${id}`)
+        })
+    })
+    .catch((error) => {
+      error.errorMessage = '更新失敗:('
+      next(error)
+    })
+
+})
+
+router.delete('/:id', (req, res, next) => {
+  const id = req.params.id
+  const userId = req.user.id
+
+  return restaurantList.findByPk(id, {
+    attributes: { exclude: [] }
+  })
+    .then((restaurant) => {
+      if (!restaurant) {
+        req.flash('error', '找不到資料')
+        return res.redirect('/restaurants')
+      }
+      if (restaurant.userId !== userId) {
+        req.flash('error', '權限不足')
+        return res.redirect('/restaurants')
+      }
+
+      //Make sure to use restaurant, not restaurantList, as this is an instance method.
+      return restaurant.destroy()// No need to write { where: { id } } since we already fetched it using findByPk earlier.
+        .then(() => {
+          req.flash('success', '刪除成功!')
+          return res.redirect('/restaurants')
+        })
+    })
+    .catch((error) => {
+      error.errorMessage = '刪除失敗:('
+      next(error)
+    })
+
 })
 
 module.exports = router

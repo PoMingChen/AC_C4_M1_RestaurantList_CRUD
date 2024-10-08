@@ -2,19 +2,24 @@
 <!-- navigation -->
 <nav class="navbar navbar-light bg-light">
   <div class="container">
-    <a class="navbar-brand" href="/">
+    <a class="navbar-brand" href="/restaurants">
       <img src="https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/6227/restaurant-list-logo.png" width="30"
         height="30" class="d-inline-block align-top" alt="我的餐廳清單">
       我的餐廳清單
     </a>
 
-    <!-- create a new restaurant -->
-    <form action="./restaurants/new" method="GET" style="display: inline;">
-      <button type="submit" class="rounded-pill btn btn-md navbar-brand" style="border: 1.5px solid #4592af;">
-        建立新餐廳
-      </button>
-    </form>
+    <div>
+      <!-- create a new restaurant -->
+      <form action="./restaurants/new" method="GET" style="display: inline;">
+        <button type="submit" class="rounded-pill btn btn-md navbar-brand" style="border: 1.5px solid #4592af;">
+          建立新餐廳
+        </button>
+      </form>
+
+      {{> navbar}}
+    </div>
   </div>
+
 </nav>
 
 <div class="banner"></div>
@@ -37,9 +42,9 @@
           </div>
         </form>
 
+        <!-- sorting selection -->
         <form action="/restaurants" method="GET" class="col-sm-6 col-md-3">
           <div class="form-group">
-            {{!-- <label for="sort" class="mr-2">Sort by: </label> --}}
             <select id="sort" name="sort" class="form-control" onchange="this.form.submit()">
               <option value="" {{#unless sortOption}}selected{{/unless}}>Sort</option>
               <option value="nameAsc" {{#if (eq sortOption "nameAsc" )}}selected{{/if}}>(A-Z)</option>
@@ -55,12 +60,13 @@
   </div>
 </div>
 
+
 <!-- restaurant list -->
 <div class="container mt-5">
   <div class="row">
     <div class="col-md-10 col-12 mx-auto">
+      {{> message}}
       <div class="row row-cols-sm-3">
-
         {{#each restaurants as |restaurant|}}
         <div class="text-secondary">
           <div class="card mb-3">
