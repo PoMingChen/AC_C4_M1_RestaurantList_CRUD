@@ -9,21 +9,29 @@
 - 使用者可以透過搜尋功能（餐廳名稱或類別），來找到符合條件的餐廳。
 - 使用者可以透過排序，包含餐廳名稱、餐廳類別、餐廳所在地區，讓餐廳清單依照自己的偏好呈現。
 
+## 功能截圖
 
 - 註冊帳密（或直接 Facebook 登入）
 ![Feature_Creating](./public/images/Feature_Register.png)
+
 - 用帳密登入（或直接 Facebook 登入）
 ![Feature_Creating](./public/images/Feature_Login.png)
+
 - 建立新餐廳 
 ![Feature_Creating](./public/images/Feature_Creating.png)
+
 - 瀏覽餐廳清單
 ![Feature_Reading1](./public/images/Feature_Reading1.png)
+
 - 瀏覽餐廳細部介紹
 ![Feature_Reading2](./public/images/Feature_Reading2.png)
+
 - 搜尋功能（餐廳名稱或類別）
 ![Feature_Searching](./public/images/Feature_Searching.png)
+
 - 更新餐廳資訊
 ![Feature_Updating](./public/images/Feature_Updating.png)
+
 - 依照餐廳類別排序
 ![Feature_Sorting](./public/images/Feature_Sorting.png)
 
@@ -73,7 +81,7 @@ npm install
 
 - 首先確保個人本地端的資料庫有啟動，並建立一個名稱為 `restaurant` 的資料庫。
 - 確認個人本地端，與連線該資料庫的帳密是否一致
-- 為了方便實作出『依照地區排序餐廳清單』的功能，以及建立種子資料中預設使用者與預設餐廳清單的關聯（User1 擁有 #1~3 號餐廳，User2 擁有 #4~6 號餐廳，#7~8 號餐廳尚無對應使用者），開發過程有建立多個 migrations 檔案，請先執行以下指令後，讓 Sequelize Model Instance 後續可以用相同的規格跟資料庫溝通。
+- 為了方便實作出『依照地區排序餐廳清單』的功能，以及建立種子資料中預設使用者與預設餐廳清單的關聯（User1 擁有 #1,2,3 號餐廳，User2 擁有 #4,5,6 號餐廳，#7~8 號餐廳尚無對應使用者），開發過程有建立多個 migrations 檔案，請先執行以下指令後，讓 Sequelize Model Instance 後續可以用相同的規格跟資料庫溝通。
 
 ```
 npx sequelize db:migrate
@@ -84,8 +92,8 @@ npx sequelize db:migrate
 - 以本專案路徑下的 `./seeders/20241006033020-add-sample-restaurant-user-data.js` 執行以下指令，完成匯入。
 - 該種子資料，執行過程會包含:
   - 針對預設使用者的密碼進行雜湊處理
-  - 針對資料庫內既有的使用者、餐廳清單進行備份(初次執行預期不會有影響)
-  - 刪除資料庫內既有的使用者、餐廳清單(初次執行預期不會有影響)
+  - 針對資料庫內既有的使用者、餐廳清單進行備份（初次執行預期不會有影響)
+  - 刪除資料庫內既有的使用者、餐廳清單（初次執行預期不會有影響)
   - 插入預設使用者、預設餐廳清單（包含建立預設使用者、預設餐廳的關聯）
   - 針對種子資料沒有的 `area` 欄位，會填入預設值 `臺灣`。
 
