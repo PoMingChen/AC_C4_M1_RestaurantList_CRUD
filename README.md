@@ -1,14 +1,19 @@
 # 我的餐廳清單
 
-這個專案是 AlphaCamp 全端網頁課程，C4 成為軟體工程師 - 後端專修， M1 + M2 章節的實作作業。主要是透過 Node.js、Express 框架，練習一個簡易的餐廳清單應用程式（Web Applicaton）。
+這個專案是 AlphaCamp 全端網頁課程，C4 成為軟體工程師 - 後端專修， M1 + M2 + M3 章節的實作作業。主要是透過 Node.js、Express 框架，練習一個簡易的餐廳清單應用程式（Web Applicaton）。
 
 主要功能有：
 
+- 可以透過註冊頁、登入頁建立帳號，登入後建立屬於自己的餐廳清單（使用者也可以選擇直接用 Facebook 登入）
 - 餐廳清單的瀏覽、餐廳細部介紹；使用者也可以自行新增、更新、刪除特定的餐廳資料。
 - 使用者可以透過搜尋功能（餐廳名稱或類別），來找到符合條件的餐廳。
 - 使用者可以透過排序，包含餐廳名稱、餐廳類別、餐廳所在地區，讓餐廳清單依照自己的偏好呈現。
 
 
+- 註冊帳密（或直接 Facebook 登入）
+![Feature_Creating](./public/images/Feature_Register.png)
+- 用帳密登入（或直接 Facebook 登入）
+![Feature_Creating](./public/images/Feature_Login.png)
 - 建立新餐廳 
 ![Feature_Creating](./public/images/Feature_Creating.png)
 - 瀏覽餐廳清單
@@ -68,7 +73,7 @@ npm install
 
 - 首先確保個人本地端的資料庫有啟動，並建立一個名稱為 `restaurant` 的資料庫。
 - 確認個人本地端，與連線該資料庫的帳密是否一致
-- 為了方便實作出『依照地區排序餐廳清單』的功能，相對於本專案路徑下準備好的種子資料 `public/jsons/restaurant.json`，有額外建立一個 `area` 欄位，所以目前 `/migrations` 資料夾中，有兩份檔案，需要先執行以下指令後，讓 Sequelize Model Instance 後續可以用相同的規格跟資料庫溝通。
+- 為了方便實作出『依照地區排序餐廳清單』的功能，以及建立種子資料中預設使用者與預設餐廳清單的關聯（User1 擁有 #1~3 號餐廳，User2 擁有 #4~6 號餐廳，#7~8 號餐廳尚無對應使用者），開發過程有建立多個 migrations 檔案，請先執行以下指令後，讓 Sequelize Model Instance 後續可以用相同的規格跟資料庫溝通。
 
 ```
 npx sequelize db:migrate
@@ -76,14 +81,19 @@ npx sequelize db:migrate
 
 4. 匯入種子資料
 
-- 以本專案路徑下的 `./seeders/20240914152946-add-sample-restaurant-data.js` 執行以下指令，完成匯入。
-- 針對種子資料沒有的 `area` 欄位，會填入預設值 `臺灣`。
+- 以本專案路徑下的 `./seeders/20241006033020-add-sample-restaurant-user-data.js` 執行以下指令，完成匯入。
+- 該種子資料，執行過程會包含:
+  - 針對預設使用者的密碼進行雜湊處理
+  - 針對資料庫內既有的使用者、餐廳清單進行備份(初次執行預期不會有影響)
+  - 刪除資料庫內既有的使用者、餐廳清單(初次執行預期不會有影響)
+  - 插入預設使用者、預設餐廳清單（包含建立預設使用者、預設餐廳的關聯）
+  - 針對種子資料沒有的 `area` 欄位，會填入預設值 `臺灣`。
 
 ```
-npx sequelize db:seed:all
+npx sequelize db:seed --seed 20241006033020-add-sample-restaurant-user-data.js
 ```
 
-5. 補充：由於本專案已經有先透過 sequelize 建立 model instance（modelName: `restaurantlist`），因此可以省略以下動作，直接執行 Migration 和種子資料的匯入。以下指令必要時可以自行回顧。
+5. 補充：由於本專案已經有先透過 sequelize 建立 model instance（modelName: `restaurantlist` 和 `User`），因此可以省略以下動作，直接執行 Migration 和種子資料的匯入。以下指令必要時可以自行回顧。
 
 ```
 npx sequelize init
@@ -91,6 +101,10 @@ npx sequelize init
 
 ```
 npx sequelize model:generate --name restaurantlist --attributes name:string, ... //initiate all the columns corresponding to the table schema in your database.
+```
+
+```
+npx sequelize model:generate --name User --attributes name:string, ... //initiate all the columns corresponding to the table schema in your database.
 ```
 
 ## Running the tests
